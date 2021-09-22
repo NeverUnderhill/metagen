@@ -1,0 +1,58 @@
+# Example of input file for the stochastic model of a generative piece.
+# Inline comments start with '#' character
+
+# global parameters
+bgColor         360 0 0
+color           360 0 100
+clothRipCoeffX  30 15
+clothRipCoeffY  30 15
+
+# components: body, head, eye
+body
+    # default quantitative traits for body
+    bodyHeight          1       0.2 # quantitative trait that has normal distribution
+                                    # with  mean 1 and std. deviation 0.2
+    shrinkCoefficient   0.5  -  0.8 # quantitative trait that has uniform probability
+    line.variance       0.6     0.2 # qunatitative trait that modifies line parameters
+    waistWidth  0.166   0.2
+    botWidth    1.5     0.2
+    # Code below describes qualitative trait bodyType that has 4 categories:
+    # RECTANGLE(20%), ELLIPSE(30%), HOURGLASS(45%), DOWNWARD_TRIANGLE(5%).
+    # All the categories can specify their own qualitative traits.
+    # They can also overwrite the default traits.
+    bodyType 
+        RECTANGLE           20
+            waistWidth      0.4     0.2
+        ELLIPSE             30
+            waistWidth          0.5     0.1
+            bodyHeight          1.2     0.3
+            shoulderThickness   0.4     0
+        HOURGLASS           45
+            waistWidth          0.35    0.2
+            bodyHeight          1.1     0.1
+            shoulderThickness   0.6     0
+        DOWNWARD_TRIANGLE   5
+            waistWidth          0.35    0.2
+            bodyHeight          1.1     0.1
+            shoulderThickness   0.4     0
+        
+head
+    headType
+        ROUND   1
+        SQUARE  1
+        CAT     2
+
+eye
+    eyeType
+        ELLIPSE                 1
+            eyeSeparation   0.22    0.03
+            w               0.11    0.05
+            h               0.11    0.05
+        ELLIPSE_ASYMMETRIC      2
+            eyeSeparation       0.22    0.03
+            w                   0.11    0.05
+            h                   0.2     0.05
+            asymmetryType       # this is an example of a nested trait
+                LEFT    50
+                RIGHT   50
+            
