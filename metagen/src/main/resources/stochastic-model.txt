@@ -2,25 +2,25 @@
 # Inline comments start with '#' character
 
 # global parameters
-bgColor         360 0 0
-color           360 0 100
 clothRipCoeffX  30 15
 clothRipCoeffY  30 15
 
 # components: body, head, eye
-body
+component body {
     # default quantitative traits for body
     bodyHeight          1       0.2 # quantitative trait that has normal distribution
                                     # with  mean 1 and std. deviation 0.2
-    shrinkCoefficient   0.5  -  0.8 # quantitative trait that has uniform probability
-    line.variance       0.6     0.2 # qunatitative trait that modifies line parameters
+    shrinkCoefficient u 0.5     0.8 # quantitative trait that has uniform probability
+    line {
+        variance       0.6     0.2 # qunatitative trait that modifies line parameters
+    }
     waistWidth  0.166   0.2
     botWidth    1.5     0.2
     # Code below describes qualitative trait bodyType that has 4 categories:
     # RECTANGLE(20%), ELLIPSE(30%), HOURGLASS(45%), DOWNWARD_TRIANGLE(5%).
     # All the categories can specify their own qualitative traits.
     # They can also overwrite the default traits.
-    bodyType 
+    trait bodyType {
         RECTANGLE           20
             waistWidth      0.4     0.2
         ELLIPSE             30
@@ -35,12 +35,16 @@ body
             waistWidth          0.35    0.2
             bodyHeight          1.1     0.1
             shoulderThickness   0.4     0
+    }
+}
         
-head
-    headType
+component head {
+    trait headType {
         ROUND   1
         SQUARE  1
         CAT     2
+    }
+}
 
 eye
     eyeType
