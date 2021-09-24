@@ -9,7 +9,7 @@ import org.antlr.v4.runtime.tree.*;
 public class App {
     public static void main(String[] args) throws Exception {
         // create a CharStream that reads from standard input
-        Path path = Paths.get(ClassLoader.getSystemResource("test.sm").toURI());
+        Path path = Paths.get(ClassLoader.getSystemResource("ghost.sm").toURI());
         CharStream input = CharStreams.fromPath(path);
 
         // create a lexer that feeds off of input CharStream

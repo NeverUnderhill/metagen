@@ -3,31 +3,43 @@
  */
 grammar Metagen;
 
-/** A rule called init that matches comma-separated values between {...}. */
-init  : (model)*;  // must match at least one value
+tokens {INDENT, DEDENT}
 
-model                   : MODEL '{' '}';
+@lexer::header {
+    import com.yuvalshavit.antlr4.DenterHelper;
+}
 
-component               : COMPONENT IDENTIFIER '{' '}';
-trait                   : TRAIT IDENTIFIER '{' (category)+ '}';
-category                : category_name attribute_set;
-category_name           : IDENTIFIER NUMBER NEWLINE;
-attribute_set           : attribute*;
-attribute               : normal_dist_attr
-                        | uniform_dist_attr;
-normal_dist_attr        : IDENTIFIER NUMBER NUMBER NEWLINE 
-                        | IDENTIFIER 'n' NUMBER NUMBER NEWLINE;
-uniform_dist_attr       : IDENTIFIER 'u' NUMBER NUMBER NEWLINE;
+@lexer::members {
+    private final DenterHelper denter = new DenterHelper(NL, MetagenParser.INDENT, MetagenParser.DEDENT) {
+        @Override
+        public Token pullToken() {
+          return MetagenLexer.super.nextToken();
+        }
+    };
 
+    @Override
+    public Token nextToken() {
+        return denter.nextToken();
+    }
+}
+
+init  : model;
+
+model                   : MODEL ':' block;
+block                   : INDENT (attribute|component|trait)+ DEDENT;
+component               : IDENTIFIER ':' block;
+trait                   : IDENTIFIER INDENT (category)+ DEDENT;
+category                : '*' IDENTIFIER NUMBER (block|NL);
+attribute               : IDENTIFIER NUMBER NUMBER NL 
+                        | IDENTIFIER MODIFIER NUMBER NUMBER NL;
 
 fragment DIGIT :[0-9];
 fragment LETTER:[a-zA-Z];
 
 MODEL       :   'model';
-COMPONENT   :   'component';
-TRAIT       :   'trait';
+MODIFIER    :   '[' IDENTIFIER ']';
 IDENTIFIER  :   LETTER(LETTER|DIGIT|'_')*;
 NUMBER      :   DIGIT+([.]DIGIT+)?;                 // Define token float as .123123 or 12321.213123 
-NEWLINE     :   ('\r'? '\n' | '\r')+;
-COMMENT     :   '#'~('\n')*('\n'|'\r') -> skip;      // Inline comments start with # and end with newline
-WS          :   [ \t\r]+ -> skip ;      // Define whitespace rule, toss it out
+NL          : ('\r'? '\n' ' '*);
+WS          :   [ \t]+ -> skip ;
+COMMENT     :   '#'~('\n')*NL -> skip;      // Inline comments start with # and end with newline

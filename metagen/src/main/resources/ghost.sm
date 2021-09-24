@@ -1,0 +1,88 @@
+# Stochastic model example
+
+# Model components are specified with "comp_name: comp_body" syntax.
+# Uppermost component name must be 'model'.
+#
+# Body part consists of one-line attributes of the form 'attrName[optionalModifier] number number'
+# Currently 2 types of attributes are supported:
+# * normal distribution:
+#       attrName[n] mean stdDeviation
+#       attrName    mean stdDeviation
+# * uniform distribution:
+#       attrName[u] lowerBoundary upperBoundary     
+#       
+# Body part can also containt traits, which represent sets of qualitative categories.
+# Syntax for defining traits:
+# TraitName
+#     * CATEGORY_1 likelihood
+#         body    
+#     * CATEGORY_2 likelihood
+#         body
+#         ...
+#         
+# Body part can also contain other nested components.
+
+model:
+    clothRipCoeffX[n] 30 15
+    clothRipCoeffY[u] 30 15
+    colorLightness    50 30
+
+    body:
+        bodyHeight              1   0.2
+        shrinkCoefficient[u]    0.5 0.8
+
+        # qualitative traits are specified with TraitName
+        #                                           CATEGORY_1 Likelihood
+        #                                           CATEGORY_2 Likelihood
+
+        BodyType
+            * RECTANGLE           20
+                waistWidth          0.4 0.2
+            * ELLIPSE             30
+                waistWidth          0.5 0.1
+                bodyHeight          1.2 0.3
+                shoulderThickness   0.4 0
+            * HOURGLASS           45
+                waistWidth          0.35 0.2
+                bodyHeight          1.1  0.1
+                shoulderThickness   0.6  0
+            * DOWNWARD_TRIANGLE   5
+                waistWidth          0.35 0.2
+                bodyHeight          1.1  0.1
+                shoulderThickness   0.4  0
+
+        arms:
+            thickness   20  10
+            leftHand:
+                HandType
+                    * BLOODY 10
+                    * REGULAR 90
+            rightHand:
+                HandType
+                    * BLOODY 20
+                    * REGULAR 80
+                
+        head:
+            width   20 2
+            height  20 5
+            eye:
+                width   4 2
+                height  3 3
+                EyeType
+                    * ROUND   20
+                    * POINTY  10
+                        angle 20 10
+                        Side
+                            * LEFT  50
+                            * RIGHT 50
+                    * SQUARE  20
+                    * ANGRY   25
+                        angryCoeff 30 15
+                    * SAD     25
+            mouth:
+                width   20 10
+                height  20 10
+                mouthType
+                    * ROUND 20
+                    * HAPPY 30
+                    * SAD   50
