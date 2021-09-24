@@ -3,13 +3,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sls.attribute.Attribute;
-import com.sls.component.Component;
+import com.sls.trait.Trait;
 
 public class Entity {
     String name;
     int numInSequence;
     List<Attribute> attributes;
-    List<Component> components;
+    List<Trait> components;
     
     Entity(String name, int numInSequence) {
         this.name = name;
@@ -25,7 +25,7 @@ public class Entity {
             rarity *= a.getRarity();
         }
 
-        for (Component c: components) {
+        for (Trait c: components) {
             rarity *= c.calculateRarity();
         }
 

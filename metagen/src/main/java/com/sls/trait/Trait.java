@@ -1,22 +1,23 @@
-package com.sls.component;
+package com.sls.trait;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.sls.attribute.Attribute;
 
-public class Component {
+public class Trait {
     private String name;
-    private String type; 
+    private String category; 
     private double rarity;
     private List<Attribute> attributes;
-    private List<Component> subComponents;
+    //private List<Trait> subComponents;
     
-    Component(String name, String type) {
+    Trait(String name, String category, double rarity) {
         this.name = name;
-        this.type = type;
+        this.category = category;
+        this.rarity = rarity;
         this.attributes = new ArrayList<>();
-        this.subComponents = new ArrayList<>();
+        //this.subComponents = new ArrayList<>();
     }
     
     public double calculateRarity() {
@@ -26,9 +27,11 @@ public class Component {
             rarity *= a.getRarity();
         }
         
-        for (Component c: subComponents) {
+        /*
+        for (Trait c: subComponents) {
             rarity *= c.calculateRarity();
         }
+        */
         
         return rarity;
     }
@@ -37,17 +40,23 @@ public class Component {
         return name;
     }
 
-    public String getType() {
-        return type;
+    public String getCategory() {
+        return category;
+    }
+
+    public void setAttributes(List<Attribute> attributes) {
+        this.attributes = attributes;
     }
 
     public List<Attribute> getAttributes() {
         return attributes;
     }
 
-    public List<Component> getSubComponents() {
+    /*
+    public List<Trait> getSubComponents() {
         return subComponents;
     }
+    */
 
     public double getRarity() {
         return rarity;
