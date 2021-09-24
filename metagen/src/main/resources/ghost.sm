@@ -31,10 +31,6 @@ model:
         bodyHeight              1   0.2
         shrinkCoefficient[u]    0.5 0.8
 
-        # qualitative traits are specified with TraitName
-        #                                           CATEGORY_1 Likelihood
-        #                                           CATEGORY_2 Likelihood
-
         BodyType
             * RECTANGLE           20
                 waistWidth          0.4 0.2

@@ -30,8 +30,7 @@ block                   : INDENT (attribute|component|trait)+ DEDENT;
 component               : IDENTIFIER ':' block;
 trait                   : IDENTIFIER INDENT (category)+ DEDENT;
 category                : '*' IDENTIFIER NUMBER (block|NL);
-attribute               : IDENTIFIER NUMBER NUMBER NL 
-                        | IDENTIFIER MODIFIER NUMBER NUMBER NL;
+attribute               : IDENTIFIER MODIFIER? NUMBER NUMBER NL;
 
 fragment DIGIT :[0-9];
 fragment LETTER:[a-zA-Z];
