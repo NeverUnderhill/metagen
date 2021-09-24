@@ -10,7 +10,7 @@ public class Attribute {
         this.value = value;
         this.rarity = rarity;
     }
-
+    
     public String getName() {
         return name;
     }
@@ -21,5 +21,10 @@ public class Attribute {
 
     public double getRarity() {
         return rarity;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("\n Name: %s \n value: %f \n rarity %f", name, value, rarity);
     }
 }

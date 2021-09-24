@@ -4,19 +4,19 @@ public class GaussianAttrGen extends AttributeGenerator {
     double mean;
     double stdDeviation;
     
-    GaussianAttrGen(String name, double mean, double stdDeviation) {
+    public GaussianAttrGen(String name, double mean, double stdDeviation) {
         super(name);
         this.mean = mean;
         this.stdDeviation = stdDeviation;
     }
 
     @Override
-    public double nextRand() {
+    protected double nextRand() {
         return mean + ((float) rand.nextGaussian()) * stdDeviation; 
     }
 
     @Override
-    public double calcRarity(double value) {
+    protected double calcRarity(double value) {
         double normalAbsValue = Math.abs(normalize(value));
         if (normalAbsValue < 1.28155) {
             return 0.8;

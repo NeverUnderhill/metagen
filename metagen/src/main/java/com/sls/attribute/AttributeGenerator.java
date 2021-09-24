@@ -16,6 +16,6 @@ public abstract class AttributeGenerator {
         return new Attribute(this.attributeName, value, calcRarity(value));
     }
     
-    public abstract double nextRand();
-    public abstract double calcRarity(double value);
+    protected abstract double nextRand();
+    protected abstract double calcRarity(double value);
 }

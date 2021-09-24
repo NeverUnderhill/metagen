@@ -5,19 +5,19 @@ public class UniformAttrGen extends AttributeGenerator {
     double min;
     double max;
     
-    UniformAttrGen(String name, double min, double max) {
+    public UniformAttrGen(String name, double min, double max) {
         super(name);
         this.min = min;
         this.max = max;
     }
 
     @Override
-    public double nextRand() {
+    protected double nextRand() {
         return min + rand.nextDouble() * (max - min); 
     }
 
     @Override
-    public double calcRarity(double value) {
+    protected double calcRarity(double value) {
         return 1.0 / BUCKET_NUMBER;
     } 
 }
