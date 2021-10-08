@@ -11,7 +11,7 @@ public class CategoryGenerator {
     private double likelihood;
     private List<AttributeGenerator> attrGens;
     
-    CategoryGenerator(String name, double likelihood) {
+    public CategoryGenerator(String name, double likelihood) {
         this.name = name;
         this.likelihood = likelihood;
         this.attrGens = new ArrayList<>();

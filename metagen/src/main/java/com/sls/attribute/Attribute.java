@@ -5,7 +5,7 @@ public class Attribute {
     private double value;
     private double rarity;
     
-    Attribute(String name, double value, double rarity) {
+    public Attribute(String name, double value, double rarity) {
         this.name = name;
         this.value = value;
         this.rarity = rarity;
