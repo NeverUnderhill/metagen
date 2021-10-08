@@ -1,5 +1,7 @@
 package com.sls.attribute;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public abstract class AttributeGenerator {
@@ -9,6 +11,16 @@ public abstract class AttributeGenerator {
     AttributeGenerator(String attributeName) {
         this.attributeName = attributeName;
         this.rand = new Random();
+    }
+    
+    public static List<Attribute> generate(List<AttributeGenerator> attrGens) {
+        List<Attribute> attributes = new ArrayList<>();
+        
+        for (AttributeGenerator ag : attrGens) {
+            attributes.add(ag.generate());
+        }
+        
+        return attributes;
     }
 
     public Attribute generate() {
