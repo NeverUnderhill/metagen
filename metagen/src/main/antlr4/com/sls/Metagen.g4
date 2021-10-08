@@ -29,16 +29,17 @@ model                   : MODEL ':' block;
 block                   : INDENT (attribute|component|trait)+ DEDENT;
 component               : IDENTIFIER ':' block;
 trait                   : IDENTIFIER INDENT (category)+ DEDENT;
-category                : '*' IDENTIFIER NUMBER (block|NL);
-attribute               : IDENTIFIER MODIFIER? NUMBER NUMBER NL;
+category                : '*' IDENTIFIER NUMBER (attributes|NL);
+attributes              : INDENT (attribute)+ DEDENT;
+attribute               : IDENTIFIER modifier? NUMBER NUMBER NL;
+modifier                : '[' IDENTIFIER ']';
 
 fragment DIGIT :[0-9];
 fragment LETTER:[a-zA-Z];
 
 MODEL       :   'model';
-MODIFIER    :   '[' IDENTIFIER ']';
 IDENTIFIER  :   LETTER(LETTER|DIGIT|'_')*;
 NUMBER      :   DIGIT+([.]DIGIT+)?;                 // Define token float as .123123 or 12321.213123 
-NL          : ('\r'? '\n' ' '*);
+NL          :   ('\r'? '\n' ' '*);
 WS          :   [ \t]+ -> skip ;
 COMMENT     :   '#'~('\n')*NL -> skip;      // Inline comments start with # and end with newline

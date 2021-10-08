@@ -68,9 +68,6 @@ model:
                     * ROUND   20
                     * POINTY  10
                         angle 20 10
-                        Side
-                            * LEFT  50
-                            * RIGHT 50
                     * SQUARE  20
                     * ANGRY   25
                         angryCoeff 30 15
