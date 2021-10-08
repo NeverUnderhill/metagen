@@ -22,6 +22,9 @@ public class App {
         MetagenParser parser = new MetagenParser(tokens);
 
         ParseTree tree = parser.init(); // begin parsing at init rule
-        System.out.println(tree.toStringTree(parser)); // print LISP-style tree
+        ParseTreeWalker walker = new ParseTreeWalker();
+        MetagenListenerImpl listener = new MetagenListenerImpl();
+        
+        walker.walk(listener, tree);
     }
 }

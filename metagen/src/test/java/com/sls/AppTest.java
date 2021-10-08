@@ -2,12 +2,16 @@ package com.sls;
 
 import static org.junit.Assert.assertTrue;
 
-import javax.swing.plaf.synth.SynthStyle;
+import java.util.Objects;
 
+import com.google.gson.Gson;
 import com.sls.attribute.Attribute;
 import com.sls.attribute.AttributeGenerator;
 import com.sls.attribute.GaussianAttrGen;
 import com.sls.attribute.UniformAttrGen;
+import com.sls.trait.CategoryGenerator;
+import com.sls.trait.Trait;
+import com.sls.trait.TraitGenerator;
 
 import org.junit.Test;
 
@@ -16,6 +20,8 @@ import org.junit.Test;
  */
 public class AppTest 
 {
+    Gson gson = new Gson();
+
     /**
      * Rigorous Test :-)
      */
@@ -49,4 +55,25 @@ public class AppTest
         }
     }
     
+    @Test
+    public void traitGeneratorTest() {
+        TraitGenerator tg = new TraitGenerator("EyeType");
+
+        CategoryGenerator round = new CategoryGenerator("ROUND", 20);
+        tg.addCategory(round);
+
+        CategoryGenerator square = new CategoryGenerator("SQUARE", 30);
+        tg.addCategory(square);
+
+        CategoryGenerator angry = new CategoryGenerator("ANGRY", 20);
+        tg.addCategory(angry);
+        
+        for (int i = 0; i < 10; i++) {
+            Trait t = tg.generate();
+            assertTrue(
+                Objects.equals(t.getCategory(), "ROUND") ||
+                Objects.equals(t.getCategory(), "SQUARE") ||
+                Objects.equals(t.getCategory(), "ANGRY"));
+        }
+    }
 }
