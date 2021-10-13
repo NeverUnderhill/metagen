@@ -1,7 +1,9 @@
-package com.sls.trait;
+package com.sls.generators;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import com.sls.properties.Trait;
 
 public class TraitGenerator {
     private String name;
@@ -48,10 +50,8 @@ public class TraitGenerator {
     public Trait generate() {
         CategoryGenerator category = this.getRandomCategory();
         double rarity = category.getLikelihood() / calcLikelihoodSum();
-        Trait trait = new Trait(this.name, category.getName(), rarity);
-        trait.setAttributes(category.generateAttributes());
         
-        return trait;
+        return category.generate(this.name, rarity);
     }
     
     public List<CategoryGenerator> getCategoryGenerators() {

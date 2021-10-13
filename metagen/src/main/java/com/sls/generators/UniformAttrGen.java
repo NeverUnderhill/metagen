@@ -1,4 +1,4 @@
-package com.sls.attribute;
+package com.sls.generators;
 
 public class UniformAttrGen extends AttributeGenerator {
     static final int BUCKET_NUMBER = 5;

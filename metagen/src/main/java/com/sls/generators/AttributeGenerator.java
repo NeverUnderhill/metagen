@@ -1,14 +1,16 @@
-package com.sls.attribute;
+package com.sls.generators;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.sls.properties.Attribute;
+
 public abstract class AttributeGenerator {
     protected String attributeName;
     protected Random rand;
     
-    AttributeGenerator(String attributeName) {
+    public AttributeGenerator(String attributeName) {
         this.attributeName = attributeName;
         this.rand = new Random();
     }

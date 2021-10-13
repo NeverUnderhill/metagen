@@ -1,36 +1,44 @@
 package com.sls;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Stack;
 
 import com.google.gson.Gson;
-import com.sls.component.ComponentGenerator;
-import com.sls.attribute.AttributeGenerator;
-import com.sls.attribute.GaussianAttrGen;
-import com.sls.attribute.UniformAttrGen;
-import com.sls.component.Component;
-import com.sls.trait.CategoryGenerator;
-import com.sls.trait.TraitGenerator;
+import com.sls.generators.AttributeGenerator;
+import com.sls.generators.CategoryGenerator;
+import com.sls.generators.ComponentGenerator;
+import com.sls.generators.DiscreeteAttrGen;
+import com.sls.generators.GaussianAttrGen;
+import com.sls.generators.TraitGenerator;
+import com.sls.generators.UniformAttrGen;
 
 public class MetagenListenerImpl extends MetagenBaseListener {
     Gson gson = new Gson();
-    private TraitGenerator activeTrait;
-    private ComponentGenerator model;
+    private Stack<TraitGenerator> traitStack;
+    private Stack<CategoryGenerator> categoryStack;
     private Stack<ComponentGenerator> componentStack;
+    private Stack<BlockType> blockStack;
+    private ComponentGenerator model;
+    
+    public ComponentGenerator getModel() {
+        return model;
+    }
 
     @Override
     public void enterModel(MetagenParser.ModelContext ctx) {
-        model = new ComponentGenerator("model");
         componentStack = new Stack<>();
-        componentStack.add(model);
+        traitStack = new Stack<>();
+        categoryStack = new Stack<>();
+        blockStack = new Stack<>();
+        componentStack.add(new ComponentGenerator("model"));
+        blockStack.add(BlockType.COMPONENT);
     }
 
     @Override
     public void exitModel(MetagenParser.ModelContext ctx) {
-        Component result = model.generate(); 
-        System.out.println(gson.toJson(result));
-        componentStack.pop();
+        model = componentStack.pop();
+        System.out.println(gson.toJson(model.generate()));
+        blockStack.pop();
     }
 
     @Override
@@ -38,33 +46,50 @@ public class MetagenListenerImpl extends MetagenBaseListener {
         ComponentGenerator component = new ComponentGenerator(ctx.IDENTIFIER().getText());
         componentStack.peek().addComponentGenerator(component);
         componentStack.add(component);
+        blockStack.push(BlockType.COMPONENT);
     }
 
     @Override
     public void exitComponent(MetagenParser.ComponentContext ctx) {
         componentStack.pop();
+        blockStack.pop();
     }
     
     @Override
     public void enterTrait(MetagenParser.TraitContext ctx) {
         String name = ctx.IDENTIFIER().getText();
-        activeTrait = new TraitGenerator(name);
+        TraitGenerator trait = new TraitGenerator(name);
+        traitStack.push(trait);
+        blockStack.push(BlockType.TRAIT);
     }
     
     @Override
     public void exitTrait(MetagenParser.TraitContext ctx) {
-        componentStack.peek().addTraitGenerator(activeTrait); 
-        activeTrait = null;
+        while (BlockType.CATEGORY.equals(blockStack.peek())) {
+            traitStack.peek().addCategory(categoryStack.pop());
+            blockStack.pop();
+        }
+        
+        if (BlockType.TRAIT.equals(blockStack.peek())) {
+            blockStack.pop();
+        } else {
+            throw new IllegalStateException("Categories must be contained inside Trait");
+        }
+
+        if (BlockType.CATEGORY.equals(blockStack.peek())) {
+            categoryStack.peek().addTraitGenerator(traitStack.pop());
+        } else if (BlockType.COMPONENT.equals(blockStack.peek())) {
+           componentStack.peek().addTraitGenerator(traitStack.pop()); 
+        }
     }
     
     @Override
     public void enterCategory(MetagenParser.CategoryContext ctx) {
-        if (activeTrait != null) {
-            String name = ctx.IDENTIFIER().getText();
-            double likelihood = Integer.parseInt(ctx.NUMBER().getText());
-            CategoryGenerator cg = new CategoryGenerator(name, likelihood);
-            activeTrait.addCategory(cg); 
-        } 
+        String name = ctx.IDENTIFIER().getText();
+        double likelihood = Integer.parseInt(ctx.NUMBER().getText());
+        CategoryGenerator cg = new CategoryGenerator(name, likelihood);
+        categoryStack.push(cg);
+        blockStack.push(BlockType.CATEGORY);
     }
     
     @Override
@@ -84,15 +109,26 @@ public class MetagenListenerImpl extends MetagenBaseListener {
             double max = Double.parseDouble(ctx.NUMBER(1).getText());
             
             ag = new UniformAttrGen(name, min, max);
-        } else {
+        } else if (Objects.equals(ctx.modifier().IDENTIFIER().getText(), "d")) {
+            int min = Integer.parseInt(ctx.NUMBER(0).getText());
+            int max = Integer.parseInt(ctx.NUMBER(1).getText());
+            
+            ag = new DiscreeteAttrGen(name, min, max);
+        }
+        else {
             throw new IllegalArgumentException("Unsupported distribution type " + name);
         }
 
-        if (activeTrait != null) {
-            List<CategoryGenerator> categoryGens = activeTrait.getCategoryGenerators();
-            categoryGens.get(categoryGens.size() - 1).addAttrGenerator(ag);
-        } else {
+        if (BlockType.CATEGORY.equals(blockStack.peek())) {
+            categoryStack.peek().addAttrGenerator(ag);
+        } else if (BlockType.COMPONENT.equals(blockStack.peek())) {
             componentStack.peek().addAttrGenerator(ag);
         }
+    }
+    
+    private enum BlockType {
+        COMPONENT,
+        CATEGORY,
+        TRAIT
     }
 }

@@ -29,8 +29,7 @@ model                   : MODEL ':' block;
 block                   : INDENT (attribute|component|trait)+ DEDENT;
 component               : IDENTIFIER ':' block;
 trait                   : IDENTIFIER INDENT (category)+ DEDENT;
-category                : '*' IDENTIFIER NUMBER (attributes|NL);
-attributes              : INDENT (attribute)+ DEDENT;
+category                : '*' IDENTIFIER NUMBER (block|NL);
 attribute               : IDENTIFIER modifier? NUMBER NUMBER NL;
 modifier                : '[' IDENTIFIER ']';
 

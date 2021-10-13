@@ -1,9 +1,9 @@
-package com.sls.trait;
+package com.sls.properties;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sls.attribute.Attribute;
+import com.sls.generators.TraitGenerator;
 
 /**
  * Class that represents a qualitative trait.
@@ -17,25 +17,17 @@ public class Trait {
     private String name;
     private String category; 
     private double rarity;
-    private List<Attribute> attributes;
+    protected List<Attribute> attributes;
+    protected List<Trait> traits;
     
     public Trait(String name, String category, double rarity) {
         this.name = name;
         this.category = category;
         this.rarity = rarity;
         this.attributes = new ArrayList<>();
+        this.traits = new ArrayList<>();
     }
     
-    public double calculateRarity() {
-        double rarity = this.rarity;
-
-        for (Attribute a: attributes) {
-            rarity *= a.getRarity();
-        }
-        
-        return rarity;
-    }
-
     public String getName() {
         return name;
     }
@@ -44,15 +36,36 @@ public class Trait {
         return category;
     }
 
-    public void setAttributes(List<Attribute> attributes) {
-        this.attributes = attributes;
+    public double getRarity() {
+        return rarity;
     }
 
     public List<Attribute> getAttributes() {
         return attributes;
     }
 
-    public double getRarity() {
+    public void setAttributes(List<Attribute> attributes) {
+        this.attributes = attributes;
+    }
+
+    public List<Trait> getTraits() {
+        return traits;
+    }
+
+    public void setTraits(List<Trait> traits) {
+        this.traits = traits;
+    }
+
+    public double calculateRarity() {
+        double rarity = this.rarity;
+
+        for (Attribute a : attributes) {
+            rarity *= a.getRarity();
+        }
+        for (Trait t : traits) {
+            rarity *= t.calculateRarity();
+        }
+
         return rarity;
     }
 }

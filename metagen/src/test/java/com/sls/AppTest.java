@@ -5,13 +5,13 @@ import static org.junit.Assert.assertTrue;
 import java.util.Objects;
 
 import com.google.gson.Gson;
-import com.sls.attribute.Attribute;
-import com.sls.attribute.AttributeGenerator;
-import com.sls.attribute.GaussianAttrGen;
-import com.sls.attribute.UniformAttrGen;
-import com.sls.trait.CategoryGenerator;
-import com.sls.trait.Trait;
-import com.sls.trait.TraitGenerator;
+import com.sls.generators.AttributeGenerator;
+import com.sls.generators.CategoryGenerator;
+import com.sls.generators.GaussianAttrGen;
+import com.sls.generators.TraitGenerator;
+import com.sls.generators.UniformAttrGen;
+import com.sls.properties.Attribute;
+import com.sls.properties.Trait;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.sls.attribute;
+package com.sls.generators;
 
 public class GaussianAttrGen extends AttributeGenerator {
     double mean;

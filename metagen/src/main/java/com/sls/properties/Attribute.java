@@ -1,4 +1,4 @@
-package com.sls.attribute;
+package com.sls.properties;
 
 public class Attribute {
     private String name;

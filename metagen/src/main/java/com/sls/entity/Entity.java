@@ -2,8 +2,8 @@ package com.sls.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sls.attribute.Attribute;
-import com.sls.trait.Trait;
+import com.sls.properties.Attribute;
+import com.sls.properties.Trait;
 
 public class Entity {
     String name;
