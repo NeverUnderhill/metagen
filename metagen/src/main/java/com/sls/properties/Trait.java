@@ -2,6 +2,7 @@ package com.sls.properties;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.sls.generators.TraitGenerator;
 
@@ -56,6 +57,44 @@ public class Trait {
         this.traits = traits;
     }
 
+    public double getAttr(String name) {
+        return getAttr(name, this.attributes);
+    }
+
+    public float getAttrf(String name) {
+        return (float) getAttr(name);
+    }
+
+    private double getAttr(String name, List<Attribute> attributes) {
+        for (Attribute a : attributes) {
+            if (Objects.equals(a.getName(), name)) {
+                return a.getValue();
+            }
+        }
+        throw new IllegalArgumentException("Attribute " + name + " does not exist.");
+    }
+
+    public Trait getTrait(String name) {
+        for (Trait t : traits) {
+            if (Objects.equals(t.getName(), name)) {
+                return t;
+            }
+        }
+        throw new IllegalArgumentException("Trait " + name + " does not exist.");
+    }
+
+    public double getTraitAttr(String traitName, String attrName) {
+        Trait t = getTrait(traitName);
+        return getAttr(attrName, t.getAttributes());
+    }
+
+    public float getTraitAttrf(String traitName, String attrName) {
+        return (float) getTraitAttr(traitName, attrName);
+    }
+
+    public String getTraitCategory(String name) {
+        return getTrait(name).getCategory();
+    }
     public double calculateRarity() {
         double rarity = this.rarity;
 

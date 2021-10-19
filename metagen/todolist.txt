@@ -1,0 +1,6 @@
+Features to add:
+* code generation (enums and classes)
+* universal traits (color, bounding box)
+* scaling realtive to parent component
+* bounded gaussian probability
+* list of probabilities
