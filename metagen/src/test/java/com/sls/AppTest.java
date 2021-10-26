@@ -7,10 +7,12 @@ import java.util.Objects;
 import com.google.gson.Gson;
 import com.sls.generators.AttributeGenerator;
 import com.sls.generators.CategoryGenerator;
+import com.sls.generators.ComponentGenerator;
 import com.sls.generators.GaussianAttrGen;
 import com.sls.generators.TraitGenerator;
 import com.sls.generators.UniformAttrGen;
 import com.sls.properties.Attribute;
+import com.sls.properties.Component;
 import com.sls.properties.Trait;
 
 import org.junit.Test;
@@ -75,5 +77,14 @@ public class AppTest
                 Objects.equals(t.getCategory(), "SQUARE") ||
                 Objects.equals(t.getCategory(), "ANGRY"));
         }
+    }
+
+    @Test
+    public void componentListGeneratorTest() {
+        ComponentGenerator main = new ComponentGenerator("Main");
+        main.addComponentGenerator(new ComponentGenerator("CompGen", 5));;
+
+        Component c = main.generateSingle();
+        assertTrue(c.getSubComponentList("CompGen").size() == 5);
     }
 }

@@ -102,6 +102,16 @@ public class Component {
         return rarity;
     }
 
+    public List<Component> getSubComponentList(String name) {
+        List<Component> output = new ArrayList<>();
+        for (Component c: components) {
+            if (Objects.equals(c.getName(), name)) {
+                output.add(c);
+            }
+        }
+        return output;
+    }
+
     public Component getSubComponent(String name) {
         for (Component c : components) {
             if (Objects.equals(c.getName(), name)) {

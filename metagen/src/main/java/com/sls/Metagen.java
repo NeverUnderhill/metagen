@@ -43,6 +43,6 @@ public class Metagen {
     }
     
     public Component generate() {
-        return cg.generate();
+        return cg.generateSingle();
     }
 }

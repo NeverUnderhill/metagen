@@ -27,11 +27,12 @@ init  : model;
 
 model                   : MODEL ':' block;
 block                   : INDENT (attribute|component|trait)+ DEDENT;
-component               : IDENTIFIER ':' block;
+component               : IDENTIFIER list_modifier? ':' block;
 trait                   : IDENTIFIER INDENT (category)+ DEDENT;
 category                : '*' IDENTIFIER NUMBER (block|NL);
 attribute               : IDENTIFIER modifier? NUMBER NUMBER NL;
 modifier                : '[' IDENTIFIER ']';
+list_modifier           : '[' NUMBER ']';
 
 fragment DIGIT :[0-9];
 fragment LETTER:[a-zA-Z];

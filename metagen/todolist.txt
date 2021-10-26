@@ -3,4 +3,3 @@ Features to add:
 * universal traits (color, bounding box)
 * scaling realtive to parent component
 * bounded gaussian probability
-* list of probabilities

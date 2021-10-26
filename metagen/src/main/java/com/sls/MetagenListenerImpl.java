@@ -51,7 +51,14 @@ public class MetagenListenerImpl extends MetagenBaseListener {
 
     @Override
     public void enterComponent(MetagenParser.ComponentContext ctx) {
-        ComponentGenerator component = new ComponentGenerator(ctx.IDENTIFIER().getText());
+        String name = ctx.IDENTIFIER().getText();
+        ComponentGenerator component;
+        if (ctx.list_modifier() == null) {
+            component = new ComponentGenerator(name);
+        } else {
+            int count = Integer.parseInt(ctx.list_modifier().NUMBER().getText());
+            component = new ComponentGenerator(name, count);
+        }
         componentStack.peek().addComponentGenerator(component);
         componentStack.add(component);
         blockStack.push(BlockType.COMPONENT);
