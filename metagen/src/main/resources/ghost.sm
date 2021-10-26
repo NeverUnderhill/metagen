@@ -57,8 +57,8 @@ model:
                 HandType
                     * BLOODY 20
                     * REGULAR 80
-                
-        head:
+        # [Neary-headless Nick to Fluffy] 
+        head[0-3]:
             width   20 2
             height  20 5
             eye:

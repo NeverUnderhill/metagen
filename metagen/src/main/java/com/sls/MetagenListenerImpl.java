@@ -4,6 +4,7 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Stack;
 
 import com.google.gson.Gson;
@@ -19,6 +20,8 @@ import com.sls.generators.DiscreeteAttrGen;
 import com.sls.generators.GaussianAttrGen;
 import com.sls.generators.TraitGenerator;
 import com.sls.generators.UniformAttrGen;
+
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 public class MetagenListenerImpl extends MetagenBaseListener {
     Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(Collection.class, new CollectionAdapter()).create();
@@ -56,7 +59,16 @@ public class MetagenListenerImpl extends MetagenBaseListener {
         if (ctx.list_modifier() == null) {
             component = new ComponentGenerator(name);
         } else {
-            int count = Integer.parseInt(ctx.list_modifier().NUMBER().getText());
+            List<TerminalNode> bounds = ctx.list_modifier().NUMBER();
+            int count;
+            if (bounds.size() == 1) {
+                count = Integer.parseInt(bounds.get(0).getText());
+            } else {
+                int lowerBound = Integer.parseInt(bounds.get(0).getText()); 
+                int upperBound = Integer.parseInt(bounds.get(1).getText()); 
+                Random rand = new Random();
+                count = rand.nextInt(lowerBound, upperBound);
+            }
             component = new ComponentGenerator(name, count);
         }
         componentStack.peek().addComponentGenerator(component);

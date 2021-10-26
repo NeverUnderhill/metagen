@@ -32,7 +32,7 @@ trait                   : IDENTIFIER INDENT (category)+ DEDENT;
 category                : '*' IDENTIFIER NUMBER (block|NL);
 attribute               : IDENTIFIER modifier? NUMBER NUMBER NL;
 modifier                : '[' IDENTIFIER ']';
-list_modifier           : '[' NUMBER ']';
+list_modifier           : '[' NUMBER ('-' NUMBER)? ']';
 
 fragment DIGIT :[0-9];
 fragment LETTER:[a-zA-Z];
